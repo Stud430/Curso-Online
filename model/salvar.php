@@ -30,10 +30,23 @@ function data($data){
     $plataforma = $_POST["plataforma"];
     $duracao = $_POST["duracao"];
     $endereco = $_POST["endereco"];
-    $di = $_POST["data_inicio"];
-    $data_inicio = data($di);
-    $dt = $_POST["data_termino"];
-    $data_termino = data($dt);
+
+    if ( $_POST["data_inicio"] == null) {
+        $data_inicio = "00/00/0000";
+    } else {
+        $di = $_POST["data_inicio"];
+        $data_inicio = data($di);
+    }
+    
+    if ( $_POST["data_termino"] == null) {
+        $data_termino = "00/00/0000";
+    } else {
+        $dt = $_POST["data_termino"];
+        $data_termino = data($dt);
+    }
+    
+    
+
     $usuario = $_POST["usuario"];
     $senha = $_POST["senha"];
     $status_curso = $_POST["status"];
