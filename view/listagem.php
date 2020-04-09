@@ -8,7 +8,7 @@
 
 // Consulta ao banco de dados
   $listagem = "SELECT id,curso, plataforma, endereco, status_curso, usuario, senha ";
-  $listagem .= "FROM cursos WHERE status_curso IN ('A Fazer','Em Andamento')";
+  $listagem .= "FROM cursos WHERE status_curso IN ('A Fazer','Em Andamento') ORDER BY plataforma";
   
   $consulta = $conectar->prepare ($listagem);
   $consulta->execute();
@@ -18,6 +18,19 @@
   }
 ?>
 
+<?php
+  $contar1 = $conectar->prepare("SELECT * FROM cursos WHERE status_curso = 'A Fazer'");
+  $contar1->execute();
+
+  $AFazer = $contar1->fetchAll();
+?>
+
+<?php
+  $contar2 = $conectar->prepare("SELECT * FROM cursos WHERE status_curso = 'Em Andamento'");
+  $contar2->execute();
+
+  $EmAndamento = $contar2->fetchAll();
+?>
 
 <!DOCTYPE html>
 <html>
@@ -58,8 +71,23 @@
 <style> 
   
     div.listagem{
-      width: 1000px;
-      padding-left: 250px;
+      width: 1250px;
+      padding-left: 10px;
+      padding-right: -50px;
+    }
+
+    div.contagem{
+      width: 2000px;
+      padding-left: 10px;
+      padding-right: -50px;
+    }
+
+    #lblAFazer{
+      padding-left: 850px;
+    }
+
+    #lblEmAndamento{
+      padding-left: 30px;
     }
 
 </style>
@@ -70,11 +98,27 @@
 
 <body>
 
+<div class="contagem">
+<a class="btn btn-info" name="zerar" href="listagem.php">Zerar Listagem</a>
+
+  <label id="lblAFazer"> A Fazer:  
+    <?php 
+      print count($AFazer); 
+    ?>  
+  </label>
+  <label id="lblEmAndamento"> Em Andamento:  
+    <?php 
+      print count($EmAndamento); 
+    ?> 
+  </label>   
+</div>
+  
+<br>
+
 <div class="listagem"> 
-<a class="btn btn-info" name="zerar" href="listagem.php">Zerar Listagem</a> <br><br>
 
   <?php
-  echo"<table class='table table-striped'>";
+  echo"<table class='table table-sm table-striped'>";
     echo "<thead>";
     echo "<tr>";
     echo "<th><center>Curso</center></th>";
@@ -95,7 +139,7 @@
     <td> <?php echo $linha["endereco"] ?> </td>
     <td> <?php echo $linha["status_curso"] ?> 
       <br>
-      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter<?php echo $linha['id']?>">
+      <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModalCenter<?php echo $linha['id']?>">
         Acessar Site
       </button>
 
@@ -132,13 +176,13 @@
     <td>
       <?php if ($linha["status_curso"]=="A Fazer") {
         ?>
-       <a class="btn btn-warning" href="../model/editar.php?id=<?php echo $linha["id"]?>" width="30" height="30" name="emandamento">
+       <a class="btn btn-warning btn-sm" href="../model/editar.php?id=<?php echo $linha["id"]?>" width="30" height="30" name="emandamento">
         Em Andamento
        </a>
-       <a class="btn btn-success" href="../model/editar.php?id=<?php echo $linha["id"]?>" width="30" height="30" name="concluido">
+       <a class="btn btn-success btn-sm" href="../model/editar.php?id=<?php echo $linha["id"]?>" width="30" height="30" name="concluido">
             Concluído
        </a>
-       <a class="btn btn-danger" href="../model/excluir.php?id=<?php echo $linha['id']?>">
+       <a class="btn btn-danger btn-sm" href="../model/excluir.php?id=<?php echo $linha['id']?>">
           Excluir
             <!-- <img src="../img/excluir.png" width="30" height="30"> -->
        </a>

@@ -8,7 +8,7 @@
 
 // Consulta ao banco de dados
   $listagem = "SELECT id,curso, plataforma,inicio,termino ";
-  $listagem .= "FROM cursos WHERE status_curso = 'Concluído'";
+  $listagem .= "FROM cursos WHERE status_curso = 'Concluído' ORDER BY termino";
   
   $consulta = $conectar->prepare ($listagem);
   $consulta->execute();
@@ -18,6 +18,12 @@
   }
 ?>
 
+<?php
+  $total = $conectar->prepare("SELECT * FROM cursos WHERE status_curso = 'Concluído'");
+  $total->execute();
+
+  $Concluidos = $total->fetchAll();
+?>
 
 <!DOCTYPE html>
 <html>
@@ -71,7 +77,8 @@
 <body>
 
 <center><h4>Cursos Concluídos</h4></center>  
-<br><br>
+<center><h5><?php print count($Concluidos); ?></h5></center>
+<br>
 
 <div class="listagem"> 
   <?php
@@ -92,7 +99,7 @@
 ?> 
     <tr>
     <td><center> <?php echo $linha["id"] ?> </center></td>
-    <td><center> <?php echo $linha["curso"] ?> </center></td>
+    <td> <?php echo $linha["curso"] ?> </td>
     <td><center> <?php echo $linha["plataforma"] ?> </center></td>
     <td><center> <?php echo $linha["inicio"] ?> </center></td>
     <td><center> <?php echo $linha["termino"] ?> </center></td>
