@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 08-Abr-2020 às 21:43
+-- Generation Time: 09-Abr-2020 às 16:58
 -- Versão do servidor: 5.7.17
 -- PHP Version: 5.6.30
 
@@ -39,18 +39,11 @@ CREATE TABLE `cursos` (
   `endereco` varchar(150) NOT NULL,
   `inicio` varchar(10) DEFAULT NULL,
   `termino` varchar(10) DEFAULT NULL,
-  `usuario` varchar(6) NOT NULL,
-  `senha` varchar(6) NOT NULL,
+  `usuario` varchar(25) NOT NULL,
+  `senha` varchar(15) NOT NULL,
   `status_curso` varchar(15) NOT NULL,
   `created` varchar(10) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `cursos`
---
-
-INSERT INTO `cursos` (`id`, `curso`, `plataforma`, `duracao`, `endereco`, `inicio`, `termino`, `usuario`, `senha`, `status_curso`, `created`) VALUES
-(1, 'abc', 'abc', 'abc', 'abc', '10/04/2020', '11/04/2020', 'abc', 'abc', 'A Fazer', '8/4/2020');
 
 --
 -- Indexes for dumped tables
@@ -70,7 +63,7 @@ ALTER TABLE `cursos`
 -- AUTO_INCREMENT for table `cursos`
 --
 ALTER TABLE `cursos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;COMMIT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
