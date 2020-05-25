@@ -32,14 +32,14 @@ function data($data){
     $endereco = $_POST["endereco"];
 
     if ( $_POST["data_inicio"] == null) {
-        $data_inicio = "00/00/0000";
+        $data_inicio = ""; //$data_inicio = "00/00/0000";
     } else {
         $di = $_POST["data_inicio"];
         $data_inicio = data($di);
     }
     
     if ( $_POST["data_termino"] == null) {
-        $data_termino = "00/00/0000";
+        $data_termino = ""; //$data_termino = "00/00/0000";
     } else {
         $dt = $_POST["data_termino"];
         $data_termino = data($dt);
