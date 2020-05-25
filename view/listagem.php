@@ -7,7 +7,7 @@
 <?php
 
 // Consulta ao banco de dados
-  $listagem = "SELECT id,curso, plataforma, endereco, status_curso, usuario, senha ";
+  $listagem = "SELECT id,curso, plataforma, endereco, status_curso, usuario, senha, inicio, termino ";
   $listagem .= "FROM cursos WHERE status_curso IN ('A Fazer','Em Andamento') ORDER BY plataforma";
   
   $consulta = $conectar->prepare ($listagem);
@@ -31,6 +31,8 @@
 
   $EmAndamento = $contar2->fetchAll();
 ?>
+
+
 
 <!DOCTYPE html>
 <html>
@@ -73,7 +75,7 @@
     div.listagem{
       width: 1250px;
       padding-left: 10px;
-      padding-right: -50px;
+      padding-right: -60px;
     }
 
     div.contagem{
@@ -83,13 +85,40 @@
     }
 
     #lblAFazer{
-      padding-left: 850px;
+      padding-left: 720px;
     }
 
     #lblEmAndamento{
       padding-left: 30px;
     }
 
+    #lblAFazer{
+      padding-left: 720px;
+    }
+
+    .btn-info{
+    color: #FFDE96;
+    }
+
+    #lbldata_termino{
+    width: 155px;
+  }
+
+  #alinhardt{
+    padding-left: 15px;
+  }
+
+  #alinhardi{
+    width: 170px;
+    padding-left: 15px;
+  }
+
+  #lblconcluido{
+    padding-left: 15px;
+  }
+  #lblinicio{
+    padding-left: 15px;
+  }
 </style>
 
 </head>
@@ -99,7 +128,13 @@
 <body>
 
 <div class="contagem">
-<a class="btn btn-info" name="zerar" href="listagem.php">Zerar Listagem</a>
+<!-- <form method="post" action="../model/editar.php"> -->
+  <a class="btn btn-dark" name="lblzerar" href="../model/zerar.php">Zerar Listagem</a>
+<!-- </form> -->
+  <a class="btn btn-dark" name="lblrelatorio" href="relatorioafazeremandamento.php">
+      Baixar Listagem
+  </a>
+
 
   <label id="lblAFazer"> A Fazer:  
     <?php 
@@ -167,25 +202,56 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+              <button type="button" class="btn btn-secondary " data-dismiss="modal">Fechar</button>
             </div>
           </div>
         </div>
       </div>
     </td>
     <td>
-      <?php if ($linha["status_curso"]=="A Fazer") {
-        ?>
-       <a class="btn btn-warning btn-sm" href="../model/editar.php?id=<?php echo $linha["id"]?>" width="30" height="30" name="emandamento">
-        Em Andamento
-       </a>
-       <a class="btn btn-success btn-sm" href="../model/editar.php?id=<?php echo $linha["id"]?>" width="30" height="30" name="concluido">
-            Concluído
-       </a>
-       <a class="btn btn-danger btn-sm" href="../model/excluir.php?id=<?php echo $linha['id']?>">
-          Excluir
-            <!-- <img src="../img/excluir.png" width="30" height="30"> -->
-       </a>
+    <?php if ($linha["status_curso"]=="A Fazer") 
+      {
+    ?>
+      
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#exampleModal<?php echo $linha['id']?>">
+  Em Andamento
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal<?php echo $linha["id"]; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Curso A Fazer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+      <form method="POST" action="../model/editarEmandamento.php">
+        <div class="form-group row">
+          <label id="lblinicio"><h5>Início: </h5></label>
+          <div id="alinhardi">
+          <input type="date" name="data_inicio" id="data_inicio" class="form-control form-control-sm">
+          </div>
+        </div>
+                    <input type="text" value="<?php echo $linha['id']?>" name="id" disabled>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" name="cadastrarinicio">Cadastrar</button>
+        </div>
+      </form>
+
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<a class="btn btn-danger btn-sm" href="../model/excluir.php?id=<?php echo $linha['id']?>">
+  Excluir
+</a>
     <?php
       } 
     ?>
@@ -194,13 +260,55 @@
     <?php if ($linha["status_curso"]=="Em Andamento") 
       {
     ?>
-       <a class="btn btn-success" href="../model/editar.php?id=<?php echo $linha["id"]?>" width="30" height="30" name="concluido">
-            Concluído
-       </a>
-       <a class="btn btn-danger" href="../model/excluir.php?id=<?php echo $linha['id']?>">
-          Excluir
-            <!-- <img src="../img/excluir.png" width="30" height="30"> -->
-       </a>
+
+    <a class="btn btn-danger btn-sm" href="../model/excluir.php?id=<?php echo $linha['id']?>">
+        Excluir
+    </a>
+
+
+    <a href="#edit<?php echo $linha['id'];?>" data-toggle="modal">
+      <button type='button' class="btn btn-success btn-sm">
+        <span class='glyphicon glyphicon-edit' aria-hidden='true'>
+          Concluído
+        </span>
+      </button>
+    </a>
+
+
+    <!--Edit Item Modal -->
+                    <div id="edit<?php echo $linha['id']; ?>" class="modal fade" role="dialog">
+                        <form method="post" class="form-horizontal" action="../model/editarConcluido.php">
+                            <div class="modal-dialog modal-lg">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3>Concluindo Curso</h3>
+                                        <button class="close" data-dismiss="modal">
+                                            <span>&times;</span>
+                                        </button>
+                                    </div>
+                                                    
+                                    <div class="modal-body">
+                                        <input type="hidden" name="edit_item_id" value="<?php echo $linha['id']; ?>">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2" for="item_name">
+                                                Início: <?php echo $linha['inicio'];?>                                                
+                                            </label>
+
+                                            <label class="control-label col-sm-2" for="item_code">Término:</label>
+                                              <input type="date" class="form-control" id="item_category" name="data_termino" value="<?php echo $linha['termino']; ?>" placeholder="Category" required> 
+                                          </div>  
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" name="update_item"> 
+                                            Edit
+                                        </button>
+                                </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+     
     <?php
       } 
     ?>
